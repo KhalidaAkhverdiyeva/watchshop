@@ -11,55 +11,48 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      name: 'tag',
+      title: 'Tag',
+      type: 'string', 
     }),
     defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: {type: 'author'},
-    }),
-    defineField({
-      name: 'mainImage',
-      title: 'Main image',
+      name: 'image',
+      title: 'Image',
       type: 'image',
       options: {
         hotspot: true,
       },
     }),
     defineField({
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
+      name: 'description',
+      title: 'Description',
+      type: 'text', 
     }),
+ 
     defineField({
-      name: 'publishedAt',
-      title: 'Published at',
-      type: 'datetime',
-    }),
-    defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
+      name: 'date',
+      title: 'Date',
+      type: 'date',
+      options: {
+        dateFormat: 'DD-MM',
+      },
     }),
   ],
+
 
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
+      tag: 'tag',
+      media: 'image',
+      date: 'date',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {tag, date} = selection
+      return {
+        ...selection,
+        subtitle: `${tag ? `Tag: ${tag}` : ''} ${date ? `| Date: ${date}` : ''}`,
+      }
     },
   },
 })
