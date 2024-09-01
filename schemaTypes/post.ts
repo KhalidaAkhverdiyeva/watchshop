@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'post',
@@ -11,9 +11,19 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'tag',
       title: 'Tag',
-      type: 'string', 
+      type: 'string',
     }),
     defineField({
       name: 'image',
@@ -26,9 +36,18 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
+      type: 'text',
+    }),
+    defineField({
+      name: 'detailedDescription',
+      title: 'Detailed Description',
+      type: 'text',
+    }),
+    defineField({
+      name: 'highlighted',
+      title: 'Highlighted',
       type: 'text', 
     }),
- 
     defineField({
       name: 'date',
       title: 'Date',
@@ -39,20 +58,21 @@ export default defineType({
     }),
   ],
 
-
   preview: {
     select: {
       title: 'title',
       tag: 'tag',
       media: 'image',
       date: 'date',
+      highlighted: 'highlighted',
     },
     prepare(selection) {
-      const {tag, date} = selection
+      const { title, tag, date, highlighted } = selection;
       return {
-        ...selection,
-        subtitle: `${tag ? `Tag: ${tag}` : ''} ${date ? `| Date: ${date}` : ''}`,
-      }
+        title,
+        subtitle: `${tag ? `Tag: ${tag}` : ''} ${date ? `| Date: ${date}` : ''} ${highlighted ? `| Highlighted: ${highlighted}` : ''}`,
+        media: selection.media,
+      };
     },
   },
-})
+});
